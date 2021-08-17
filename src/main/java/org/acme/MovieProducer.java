@@ -14,6 +14,6 @@ public class MovieProducer {
     Emitter<Record<Integer, String>> emitter;
 
     public void sendMovieToKafka(Movie movie) {
-        emitter.send(Record.of(movie.year, movie.title));
+        emitter.send(Record.of(movie.getYear(), movie.getTitle()));
     }
 }

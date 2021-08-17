@@ -12,7 +12,7 @@ public class MovieConsumer {
     private final Logger logger = Logger.getLogger(MovieConsumer.class);
 
     @Incoming("movies-in")
-    public void receive(Record<Integer, String> record) {
-        logger.infof("Got a movie: %d - %s", record.key(), record.value());
+    public void receive(Record<Integer, String> movie) {
+        logger.infof("Got a movie: %d - %s", movie.key(), movie.value());
     }
 }
