@@ -44,3 +44,12 @@ services:
       JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
     depends_on:
       - "kafka"
+
+  mongodb:
+    image: mongo:5.0.2
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: kafka-consumer
+      MONGO_INITDB_ROOT_PASSWORD: kafka-consumer
+      MONGO_INITDB_DATABASE: kafka-consumer
