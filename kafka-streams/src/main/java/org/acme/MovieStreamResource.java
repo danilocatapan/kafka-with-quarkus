@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 @Path("/streams")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class MovieResource {
+public class MovieStreamResource {
 
     @Inject
     MovieProducer producer;
