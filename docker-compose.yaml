@@ -49,7 +49,8 @@ services:
     image: mongo:5.0.2
     ports:
       - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: kafka-consumer
-      MONGO_INITDB_ROOT_PASSWORD: kafka-consumer
-      MONGO_INITDB_DATABASE: kafka-consumer
+    volumes:
+      - mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:
