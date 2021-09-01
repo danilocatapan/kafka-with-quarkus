@@ -39,7 +39,7 @@ public class MovieConsumer {
             logger.error("[ERROR AT] TYPE: ADDING | OFFSET: "+movie.offset()+" | PARTITION: "+movie.partition()+" | EVENTO: "+movie.value());
             logger.error("[CAUSE] "+e.getMessage());
 
-            CompletionStage<Void> completionStage = this.failEmitter(movie, e, "", "vinculo");
+            CompletionStage<Void> completionStage = this.failEmitter(movie, e, "", "movies");
 
             completionStage.whenComplete((acked, nacked) -> {
                 if (nacked != null) {
