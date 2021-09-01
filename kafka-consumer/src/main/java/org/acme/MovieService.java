@@ -3,6 +3,7 @@ package org.acme;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import io.smallrye.reactive.messaging.kafka.Record;
 import org.acme.mongodb.Movie;
 import org.bson.Document;
 
@@ -32,10 +33,10 @@ public class MovieService {
         return list;
     }
 
-    public void add(Movie movie){
+    public void add(Record<Integer, String> movie){
         Document document = new Document()
-                .append("title", movie.getTitle())
-                .append("year", movie.getYear());
+                .append("title", movie.value())
+                .append("year", movie.key());
 
         getCollection().insertOne(document);
     }
