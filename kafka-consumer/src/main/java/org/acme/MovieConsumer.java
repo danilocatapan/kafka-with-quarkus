@@ -1,6 +1,6 @@
 package org.acme;
 
-import io.smallrye.reactive.messaging.kafka.Record;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.reactive.messaging.Acknowledgment;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -20,7 +20,7 @@ public class MovieConsumer {
     @Incoming("movies-in")
     @Retry(delay = 10, maxRetries = 5)
     @Acknowledgment(Acknowledgment.Strategy.POST_PROCESSING)
-    public void receive(Record<Integer, String> movie) {
+    public void receive(ConsumerRecord<Integer, String> movie) {
         logger.infof("Got a movie: %d - %s", movie.key(), movie.value());
         movieService.add(movie);
     }
