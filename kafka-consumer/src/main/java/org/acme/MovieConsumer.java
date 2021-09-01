@@ -36,7 +36,7 @@ public class MovieConsumer {
             logger.infof("Got a movie: %d - %s", movie.key(), movie.value());
             movieService.add(movie);
         } catch (Exception e) {
-            logger.error("[ERROR AT] TYPE: ADDING | OFFSET: "+movie.offset()+" | PARTITION: "+movie.partition()+" | EVENTO: "+movie.value());
+            logger.error("[ERROR AT] TYPE: INFRA | OFFSET: "+movie.offset()+" | PARTITION: "+movie.partition()+" | EVENTO: "+movie.value());
             logger.error("[CAUSE] "+e.getMessage());
 
             CompletionStage<Void> completionStage = this.failEmitter(movie, e, "", "movies");

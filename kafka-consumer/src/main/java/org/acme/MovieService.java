@@ -6,7 +6,10 @@ import com.mongodb.client.MongoCursor;
 import org.acme.mongodb.Movie;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.bson.Document;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.logging.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -15,8 +18,20 @@ import java.util.List;
 @ApplicationScoped
 public class MovieService {
 
+    private final Logger logger = Logger.getLogger(MovieService.class);
+
+    @ConfigProperty(name = "quarkus.mongodb.database")
+    String database;
+
+    String collectionMovies = "movies";
+
     @Inject
     MongoClient mongoClient;
+
+    @PostConstruct
+    public void init() {
+        logger.infof("[INFRA] STARTING DATABASE: "+ database +" COLLECTION: "+collectionMovies );
+    }
 
     public List<Movie> list(){
         List<Movie> list = new ArrayList<>();
