@@ -1,21 +1,21 @@
 package org.acme.mongodb;
 
-import io.quarkus.mongodb.panache.PanacheMongoEntity;
-import io.quarkus.mongodb.panache.common.MongoEntity;
+import org.bson.Document;
 
-@MongoEntity(collection = "movies")
-public class Movie extends PanacheMongoEntity {
+public class Movie {
 
     public Movie() {
     }
 
-    public Movie(String title, int year) {
+    public Movie(String title, int year, String description) {
         this.title = title;
         this.year = year;
+        this.description = description;
     }
 
     String title;
     int year;
+    String description;
 
     public String getTitle() {
         return title;
@@ -31,5 +31,31 @@ public class Movie extends PanacheMongoEntity {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", year=" + year +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
+    public Document toDocument() {
+        Document docMovie = new Document();
+        docMovie.append("title", this.title);
+        docMovie.append("year", this.year);
+        docMovie.append("description", this.description);
+
+        return docMovie;
     }
 }
