@@ -39,9 +39,11 @@ public class MovieService {
         try (MongoCursor<Document> cursor = getCollection().find().iterator()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
-                Movie movie = new Movie();
-                movie.setTitle(document.getString("title"));
-                movie.setYear(document.getInteger("year"));
+                Movie movie = new Movie(
+                        document.getString("title"),
+                        document.getInteger("year"),
+                        document.getString("description"));
+
                 list.add(movie);
             }
         }
@@ -49,7 +51,6 @@ public class MovieService {
     }
 
     public void add(Movie movie){
-
         // Filme que será pesquisado
         Document query = new Document();
         query.put("title", movie.getTitle());
