@@ -1,4 +1,8 @@
-package org.acme;
+package org.acme.resource;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.acme.model.Movie;
+import org.acme.producer.MovieProducer;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -17,7 +21,7 @@ public class MovieStreamResource {
     MovieProducer producer;
 
     @POST
-    public Response send(Movie movie) {
+    public Response send(Movie movie) throws JsonProcessingException {
         producer.sendMovieToKafka(movie);
         // Return an 202 - Accepted response.
         return Response.accepted().build();
