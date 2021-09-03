@@ -1,10 +1,10 @@
-package org.acme;
+package org.acme.service;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.FindOneAndReplaceOptions;
 import org.acme.mongodb.Movie;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.bson.Document;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
@@ -48,12 +48,20 @@ public class MovieService {
         return list;
     }
 
-    public void add(ConsumerRecord<Integer, String> movie){
-        Document document = new Document()
-                .append("title", movie.value())
-                .append("year", movie.key());
+    public void add(Movie movie){
 
-        getCollection().insertOne(document);
+        // Filme que será pesquisado
+        Document query = new Document();
+        query.put("title", movie.getTitle());
+        query.put("year", movie.getYear());
+
+        // Filme que será atualizado ou Inserido
+        Document docMovie = movie.toDocument();
+
+        FindOneAndReplaceOptions options = new FindOneAndReplaceOptions().upsert(true);
+
+        MongoCollection collection = getCollection();
+        collection.findOneAndReplace(query, docMovie, options);
     }
 
     private MongoCollection getCollection(){
