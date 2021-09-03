@@ -1,9 +1,9 @@
-package org.acme.resource;
+package com.github.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.acme.model.Movie;
-import org.acme.producer.MovieProducer;
-import org.acme.service.MovieService;
+import com.github.model.Movie;
+import com.github.producer.MovieProducer;
+import com.github.service.MovieService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;

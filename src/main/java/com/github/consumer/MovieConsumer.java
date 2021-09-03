@@ -1,9 +1,9 @@
-package org.acme.consumer;
+package com.github.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.acme.model.Movie;
-import org.acme.service.MovieService;
+import com.github.model.Movie;
+import com.github.service.MovieService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;
 import org.eclipse.microprofile.faulttolerance.Retry;

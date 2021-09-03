@@ -1,4 +1,4 @@
-package org.acme.model;
+package com.github.model;
 
 import org.bson.Document;
 

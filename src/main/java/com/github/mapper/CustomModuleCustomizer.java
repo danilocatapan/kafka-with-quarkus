@@ -1,4 +1,4 @@
-package org.acme.mapper;
+package com.github.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
