@@ -28,7 +28,6 @@ public class MovieResource {
     }
 
     @POST
-    @Path("/streams")
     public Response send(Movie movie) throws JsonProcessingException {
         producer.sendMovieToKafka(movie);
         // Return an 202 - Accepted response.
