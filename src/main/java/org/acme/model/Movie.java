@@ -1,4 +1,4 @@
-package org.acme.mongodb;
+package org.acme.model;
 
 import org.bson.Document;
 

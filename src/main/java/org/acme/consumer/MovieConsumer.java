@@ -2,7 +2,7 @@ package org.acme.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.acme.mongodb.Movie;
+import org.acme.model.Movie;
 import org.acme.service.MovieService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;
