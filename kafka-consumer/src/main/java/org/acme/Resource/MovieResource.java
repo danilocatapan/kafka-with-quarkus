@@ -1,6 +1,7 @@
-package org.acme;
+package org.acme.Resource;
 
 import org.acme.mongodb.Movie;
+import org.acme.service.MovieService;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
