@@ -1,7 +1,9 @@
-package org.acme;
+package org.acme.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.acme.mongodb.Movie;
+import org.acme.service.MovieService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Header;
 import org.eclipse.microprofile.faulttolerance.Retry;
@@ -31,24 +33,29 @@ public class MovieConsumer {
     @Incoming("movies-in")
     @Retry(delay = 10, maxRetries = 5)
     @Acknowledgment(Acknowledgment.Strategy.POST_PROCESSING)
-    public void receive(ConsumerRecord<Integer, String> movie) throws JsonProcessingException {
+    public void receive(ConsumerRecord<String, String> event) throws JsonProcessingException {
         try {
-            logger.infof("Got a movie: %d - %s", movie.key(), movie.value());
+            ObjectMapper mapper = new ObjectMapper();
+            Movie movie = mapper.readValue(event.value(), Movie.class);
+
+            logger.infof("Event: %s", event.value());
+            logger.infof("Movie: %s", movie.toString());
+
             movieService.add(movie);
         } catch (Exception e) {
-            logger.error("[ERROR AT] TYPE: INFRA | OFFSET: "+movie.offset()+" | PARTITION: "+movie.partition()+" | EVENTO: "+movie.value());
+            logger.error("[ERROR AT] TYPE: INFRA | OFFSET: "+event.offset()+" | PARTITION: "+event.partition()+" | EVENTO: "+event.value());
             logger.error("[CAUSE] "+e.getMessage());
 
-            CompletionStage<Void> completionStage = this.failEmitter(movie, e, "", "movies");
+            CompletionStage<Void> completionStage = this.failEmitter(event, e, "", "movies");
 
             completionStage.whenComplete((acked, nacked) -> {
                 if (nacked != null) {
                     logger.error("[ERROR AT] TYPE: DLQ | MSG: ERROR SENDING DLQ MESSAGE");
-                    logger.error("[ERROR AT] OFFSET: "+movie.offset()+" | PARTITION: "+movie.partition()+" | EVENTO: "+movie.value());
+                    logger.error("[ERROR AT] OFFSET: "+event.offset()+" | PARTITION: "+event.partition()+" | EVENTO: "+event.value());
                     logger.error("[CAUSE] " + nacked.getMessage());
                     nacked.printStackTrace();
                 } else {
-                    logger.error("[ERROR AT] MSG: SUCCESS SENDING TO DLQ | OFFSET: "+movie.offset()+" | PARTITION: "+movie.partition()+" | EVENTO: "+movie.value());
+                    logger.error("[ERROR AT] MSG: SUCCESS SENDING TO DLQ | OFFSET: "+event.offset()+" | PARTITION: "+event.partition()+" | EVENTO: "+event.value());
                 }
             });
 
@@ -56,7 +63,7 @@ public class MovieConsumer {
         }
     }
 
-    private CompletionStage<Void> failEmitter(ConsumerRecord<Integer, String> event, Exception cause, String additionalInfo, String eventSource) throws JsonProcessingException {
+    private CompletionStage<Void> failEmitter(ConsumerRecord<String, String> event, Exception cause, String additionalInfo, String eventSource) throws JsonProcessingException {
 
         Map<String, Object> failMessage = new HashMap<String, Object>();
         failMessage.put("timestamp", event.timestamp());
