@@ -66,6 +66,6 @@ public class MovieService {
     }
 
     private MongoCollection getCollection(){
-        return mongoClient.getDatabase("kafka-consumer").getCollection("movies");
+        return mongoClient.getDatabase(database).getCollection(collectionMovies);
     }
 }
